@@ -48,8 +48,7 @@ void main(void) {
     PORTD = 0;
     PORTE = 0;
     
-    OPTION_REGbits.RBPU = 0; // ativa pull-ups
-    OPTION_REGbits.INTEDG = 0; // ativa interrupção externa em borda de descida (botão pull-up)
+    OPTION_REGbits.RBPU = 0; // ativa pull-up
     OPTION_REGbits.PSA = 1; // prescaler do WDT
     /*
      configurar prescaler do watchdog timer
@@ -59,7 +58,6 @@ void main(void) {
      */
     
     // configurando o Timer 1 e interrupções
-    
     T1CONbits.TMR1CS = 1;   // clock externo
     T1CONbits.T1SYNC = 1;   // assíncrono
     PIE1bits.TMR1IE = 1;    // habilito interrupção do timer 1
