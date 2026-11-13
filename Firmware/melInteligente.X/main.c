@@ -96,6 +96,11 @@ void main(void) {
     Lcd_Set_Cursor(1,1);    // põe cursor linha 1 coluna 1
      
     while(1){
+        // escrever no lcd se o botão foi pressionado
+        if(!BOTAO){
+            
+        }
+        
         // medição
         if(segundos - instanteUltimaMedicao >= INTERVALO_MEDICAO_S){
             instanteUltimaMedicao = segundos;

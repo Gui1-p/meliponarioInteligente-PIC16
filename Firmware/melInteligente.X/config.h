@@ -1,6 +1,3 @@
-#define _XTAL_FREQ 4000000 
-
-//---------------------------
 #define DEMO
  
 #ifdef DEMO
