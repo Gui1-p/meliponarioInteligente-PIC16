@@ -15,20 +15,6 @@
   #define SEGUNDOS_POR_DIA      86400UL
 #endif
  
-
-#define CFG_ADCON1      0x82        // AN0-AN4 analógicos, PORTE digital, justificado à direita
-#define CFG_OPTION_REG  0x0F        // Pull-ups PORTB on, INTEDG=0, prescaler no WDT 1:128 (~2,3 s)
-#define CFG_T1CON       0b00000111  // Timer1: clock externo em T1CKI, assíncrono, 1:1, ligado
-                                    // (hardware real com cristal: 0b00001111)
-#define CFG_ADCON0_BASE 0x41        // Fosc/8 (Tad = 2 us) + ADON; canal em bits 5-3
- 
- 
-#define CFG_TRISA       0xFF        // RA0-RA5 entradas
-#define CFG_TRISB       0xFF        // RB0, RB4, RB5 entradas
-#define CFG_TRISC       0b10000001  // RC0 (T1CKI) e RC7 (RX) entradas
-#define CFG_TRISD       0x00        // LCD
-#define CFG_TRISE       0x00        // Enables e alerta
- 
 /* ===================== BOTÕES (entradas digitais) ===================== */
 // Pull-ups internos do PORTB ligados: solto = 1, apertado = 0
 #define TAMPA           PORTBbits.RB0       // Endstop da tampa (INT)
