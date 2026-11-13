@@ -41,12 +41,6 @@
 /* ===================== TEMPERATURAS (LM35, analógicas) ===================== */
 #define T_INT_TRIS      TRISAbits.TRISA0    // RA0/AN0 - LM35 interno
 #define T_EXT_TRIS      TRISAbits.TRISA1    // RA1/AN1 - LM35 externo
-#define CH_T_INT        0
-#define CH_T_EXT        1
- 
-#define ADC_VREF        5000    // Vref = VDD
-#define ADC_MAX         1023    // 10 bits
-#define LM35_MV_POR_C   10      // 10 mV/°C -> T(décimos) = adc * 5000 / 1023
  
 // Saídas
 #define AQUECEDOR       PORTCbits.RC2
