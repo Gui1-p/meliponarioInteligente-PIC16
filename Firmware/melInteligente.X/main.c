@@ -19,6 +19,8 @@
 #include <mainFunctions.h>
 #include <config.h>
 
+#include "lcd.h"
+
 #define _XTAL_FREQ 4000000 
 
 int segundos = 0;
@@ -37,9 +39,16 @@ void __interrupt() relogio(void)
         INTCONbits.INTF = 0;        // limpa flag
         instanteUltimoManejo = segundos; // registra o momento do manejo
     }
+    
+    if(INTCONbits.RBIF){            // se foi o botao do display
+        INTCONbits.RBIF = 0;        // limpa flag
+        instanteUltimoBotaoDisplay = segundos;
+    }
 }
 
 void main(void) {
+    char buffer[20];     //variável para a função sprintf
+    
     TRISA = 0xFF;           // RA0-RA5 entradas (analógicas)
     TRISB = 0xFF;           // RB0, RB4, RB5 entradas
     TRISC = 0b10000001;     // RC0 (T1CKI) e RC7 (RX) entradas, resto saída
@@ -74,32 +83,47 @@ void main(void) {
     OPTION_REGbits.INTEDG = 0;  // borda de descida (botao pull-up)
     INTCONbits.INTF = 0;        // limpa flag antes
     
+    // configurando interrupção do botao do display
+    INTCONbits.RBIE = 1;    // ativa interrupção nos pinos RB4 a RB
+    INTCONbits.RBIF = 0;    // limpa flag
+    
     INTCONbits.GIE = 1;     // habilita a interrupção global
     T1CONbits.ON = 1;       // liga timer 1
     
-    // medição
-    if(segundos - instanteUltimaMedicao >= INTERVALO_MEDICAO_S){
-        instanteUltimaMedicao = segundos;
-        /*
-         * lê temperaturas, bateria e peso;
-         * decidir se liga ou não o aquecedor;
-         * decidir se liga o alerta;
-         */
-    }
     
-    // pesagem pós manejo
-    if(segundos - instanteUltimoManejo >= ESPERA_POS_MANEJO_S){
-        // instanteUltimoManejo = segundos;
-        // pesa de novo e calcula quanto foi retirado
-    }
+    Lcd_Init();             //necessário para o LCD iniciar
+    Lcd_Clear();            // limpa LCD
+    Lcd_Set_Cursor(1,1);    // põe cursor linha 1 coluna 1
+     
+    while(1){
+        // medição
+        if(segundos - instanteUltimaMedicao >= INTERVALO_MEDICAO_S){
+            instanteUltimaMedicao = segundos;
+            /*
+             * lê temperaturas, bateria e peso;
+             * decidir se liga ou não o aquecedor;
+             * decidir se liga o alerta;
+             */
+        }
 
-    
-    SLEEP();    // entra no modo sleep
-    NOP();      // um ciclo de máquina sem fazer nada
-    
-    // limpar flags de interrupção que podem ter acordado o pic
-    PIR1bits.TMR1IF = 0;
-    INTCONbits.INTF = 0;
-    
+        // pesagem pós manejo
+        if(segundos - instanteUltimoManejo >= ESPERA_POS_MANEJO_S){
+            // instanteUltimoManejo = segundos;
+            // pesa de novo e calcula quanto foi retirado
+        }
+
+        // ligar LCD por 30 segundos
+        if(segundos - instanteUltimoBotaoDisplay >= 30){
+            // deliga display se se passaram 30 segundos
+        }
+
+        SLEEP();    // entra no modo sleep
+        NOP();      // um ciclo de máquina sem fazer nada
+
+        // limpar flags de interrupção que podem ter acordado o pic
+        PIR1bits.TMR1IF = 0;
+        INTCONbits.INTF = 0;
+        INTCONbits.RBIF = 0;
+    }
     return;
 }
