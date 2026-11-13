@@ -20,6 +20,7 @@
 #include <config.h>
 
 int segundos = 0;
+int instanteUltimaMedicao = 0;
 int instanteUltimoManejo = 0;
 
 void __interrupt() relogio(void)
@@ -65,13 +66,20 @@ void main(void) {
     T1CONbits.ON = 1;       // liga timer 1
     
     // medição
-    if(segundos - instanteUltimoManejo >= INTERVALO_MEDICAO_S){
+    if(segundos - instanteUltimaMedicao >= INTERVALO_MEDICAO_S){
+        instanteUltimaMedicao = segundos;
         /*
          * lê temperaturas, bateria e peso;
          * decidir se liga ou não o aquecedor;
          * decidir se liga o alerta;
          */
     }
-        
+    
+    // pesagem pós manejo
+    if(segundos - instanteUltimoManejo >= ESPERA_POS_MANEJO_S){
+        instanteUltimoManejo = segundos;
+        // pesa de novo e calcula quanto foi retirado
+    }
+    
     return;
 }
