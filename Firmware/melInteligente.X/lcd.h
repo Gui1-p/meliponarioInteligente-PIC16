@@ -41,11 +41,11 @@ void Lcd_Clear()
 
 void Lcd_Set_Cursor(char a, char b)
 {
-	char temp,z,y;
+	char temp, z, y;
 	if(a == 1)
 	{
-	  temp = 0x80 + b - 1;
-		z = temp>>4;
+		temp = 0x80 + b - 1;
+		z = temp >> 4;
 		y = temp & 0x0F;
 		Lcd_Cmd(z);
 		Lcd_Cmd(y);
@@ -53,7 +53,23 @@ void Lcd_Set_Cursor(char a, char b)
 	else if(a == 2)
 	{
 		temp = 0xC0 + b - 1;
-		z = temp>>4;
+		z = temp >> 4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+	else if(a == 3)
+	{
+		temp = 0x94 + b - 1;
+		z = temp >> 4;
+		y = temp & 0x0F;
+		Lcd_Cmd(z);
+		Lcd_Cmd(y);
+	}
+	else if(a == 4)
+	{
+		temp = 0xD4 + b - 1;
+		z = temp >> 4;
 		y = temp & 0x0F;
 		Lcd_Cmd(z);
 		Lcd_Cmd(y);
