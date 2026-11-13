@@ -23,12 +23,12 @@ int lerTemperatura(bit sensor){ // 1 = interno e 0 = externo
     
     if(sensor){ // lê o canal de temperatura interna no RA0/AN0
         ADCON0bits.CHS0 = 0;
-        ADCON0bits.ADON  = 1;     // conversor ligado
     } 
     else{ // lê o canal de temperatura externa no RA1/AN1
-        ADCON0bits.CHS0 = 1;       // canal 1 (001) = externa
-        ADCON0bits.ADON  = 1;     // conversor ligado             
+        ADCON0bits.CHS0 = 1;       // canal 1 (001) = externa            
     }
+    
+    ADCON0bits.ADON  = 1; //liga o conversor
     
     int leitura = converter();  //leitura recebe a juncao das partes do valor
     
@@ -48,9 +48,19 @@ int lerPeso(void)
     
     int leitura = converter(); 
     
-    int peso = leitura * PESO_PASSO;
+    return = leitura * PESO_PASSO;
+}
+
+int lerBateria()
+{
+    ADCON0bits.CHS1 = 1; //selecao canal
+    ADCON0bits.CHS0 = 0;
     
-    return peso;
+    ADCON0bits.ADON  = 1; //liga o conversor
+    
+    int leitura = converter();
+    
+    return leitura * BATERIA_PASSO;
 }
 
 int converter(void)
