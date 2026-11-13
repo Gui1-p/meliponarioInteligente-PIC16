@@ -24,10 +24,16 @@
 #define BTN_TESTE_WDT   PORTBbits.RB5       // Só para demonstração
 #define BTN_TESTE_TRIS  TRISBbits.TRISB5
  
-/* ===================== TEMPERATURAS (LM35, analógicas) ===================== */
+/* ===================== ENTRADAS ANALOGICAS (LM35, analógicas) ===================== */
 #define T_INT_TRIS      TRISAbits.TRISA0    // RA0/AN0 - LM35 interno
 #define T_EXT_TRIS      TRISAbits.TRISA1    // RA1/AN1 - LM35 externo
  
+#define PESO_TRIS       TRISAbits.TRISA5    // Balanca
+
+#define BATERIA_TRIS    TRISAbits.TRISA2    // Tensao da Bateria
+
+
+
 // Saídas
 #define AQUECEDOR       PORTCbits.RC2
 #define EN_SENSORES     PORTEbits.RE0
