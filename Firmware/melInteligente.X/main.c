@@ -22,12 +22,18 @@
 int segundos = 0;
 int instanteUltimaMedicao = 0;
 int instanteUltimoManejo = 0;
+int instanteUltimoBotaoDisplay = 0;
 
 void __interrupt() relogio(void)
 {
     if (PIR1bits.TMR1IF) {          // se foi o Timer 1
         PIR1bits.TMR1IF = 0;        // limpa flag
         segundos += 2;              // se passaram 2 segundos
+    }
+    
+    if(INTCONbits.INTF){            // se foi a tampa
+        INTCONbits.INTF = 0;        // limpa flag
+        instanteUltimoManejo = segundos; // registra o momento do manejo
     }
 }
 
@@ -58,9 +64,15 @@ void main(void) {
     T1CONbits.T1SYNC = 1;   // assíncrono
     PIE1bits.TMR1IE = 1;    // habilito interrupção do timer 1
     INTCONbits.PEIE = 1;    // habilita periféricos (timer 1)
+    PIR1bits.TMR1IF = 0;    // limpa flag
     
     T1CONbits.T1CKPS0 = 0;  // prescaler 1:1
     T1CONbits.T1CKPS1 = 0;
+    
+    // configurando interrupção da tampa
+    INTCONbits.INTE = 1;        // habilita interrupção do pino RB0/INT
+    OPTION_REGbits.INTEDG = 0;  // borda de descida (botao pull-up)
+    INTCONbits.INTF = 0;        // limpa flag antes
     
     INTCONbits.GIE = 1;     // habilita a interrupção global
     T1CONbits.ON = 1;       // liga timer 1
@@ -77,9 +89,9 @@ void main(void) {
     
     // pesagem pós manejo
     if(segundos - instanteUltimoManejo >= ESPERA_POS_MANEJO_S){
-        instanteUltimoManejo = segundos;
+        // instanteUltimoManejo = segundos;
         // pesa de novo e calcula quanto foi retirado
     }
-    
+
     return;
 }
