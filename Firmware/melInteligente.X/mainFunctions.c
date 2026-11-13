@@ -14,3 +14,5 @@ float lerTemperatura(bit sensor){ // 1 = interno e 0 = externo
         ADCON0bits.CHS2 = 1;
     }
 }
+
+

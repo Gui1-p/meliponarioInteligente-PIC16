@@ -19,6 +19,17 @@
 #include <mainFunctions.h>
 #include <config.h>
 
+int segundos = 0;
+int instanteUltimoManejo = 0;
+
+void __interrupt() relogio(void)
+{
+    if (PIR1bits.TMR1IF) {          // se foi o Timer 1
+        PIR1bits.TMR1IF = 0;        // limpa flag
+        segundos += 2;              // se passaram 2 segundos
+    }
+}
+
 void main(void) {
     TRISA = 0xFF;           // RA0-RA5 entradas (analógicas)
     TRISB = 0xFF;           // RB0, RB4, RB5 entradas
@@ -34,11 +45,33 @@ void main(void) {
     OPTION_REGbits.INTEDG = 0; // ativa interrupção externa em borda de descida (botão pull-up)
     OPTION_REGbits.PSA = 1; // prescaler do WDT
     /*
-     CONFIGURAR PRESCALER
+     configurar prescaler do watchdog timer
      OPTION_REGbits.PS0
      OPTION_REGbits.PS1
      OPTION_REGbits.PS2
      */
-            
+    
+    // configurando o Timer 1 e interrupções
+    
+    T1CONbits.TMR1CS = 1;   // clock externo
+    T1CONbits.T1SYNC = 1;   // assíncrono
+    PIE1bits.TMR1IE = 1;    // habilito interrupção do timer 1
+    INTCONbits.PEIE = 1;    // habilita periféricos (timer 1)
+    
+    T1CONbits.T1CKPS0 = 0;  // prescaler 1:1
+    T1CONbits.T1CKPS1 = 0;
+    
+    INTCONbits.GIE = 1;     // habilita a interrupção global
+    T1CONbits.ON = 1;       // liga timer 1
+    
+    // medição
+    if(segundos - instanteUltimoManejo >= INTERVALO_MEDICAO_S){
+        /*
+         * lê temperaturas, bateria e peso;
+         * decidir se liga ou não o aquecedor;
+         * decidir se liga o alerta;
+         */
+    }
+        
     return;
 }
