@@ -91,5 +91,13 @@ void main(void) {
         // pesa de novo e calcula quanto foi retirado
     }
 
+    
+    SLEEP();    // entra no modo sleep
+    NOP();      // um ciclo de máquina sem fazer nada
+    
+    // limpar flags de interrupção que podem ter acordado o pic
+    PIR1bits.TMR1IF = 0;
+    INTCONbits.INTF = 0;
+    
     return;
 }
