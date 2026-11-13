@@ -26,9 +26,10 @@
 #define T_EXT_TRIS      TRISAbits.TRISA1    // RA1/AN1 - LM35 externo
  
 #define PESO_TRIS       TRISAbits.TRISA5    // Balanca
+#define PESO_PASSO      20                  //passo da balança em gramas, considerando balança de 20,5KG
 
 #define BATERIA_TRIS    TRISAbits.TRISA2    // Tensao da Bateria
-
+#define BATERIA_PASSO   15                  //passo da bateria, considerando uma bateria de cerca de 15V
 
 
 // Saídas
