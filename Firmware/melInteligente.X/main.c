@@ -19,6 +19,8 @@
 #include <mainFunctions.h>
 #include <config.h>
 
+#define _XTAL_FREQ 4000000 
+
 int segundos = 0;
 int instanteUltimaMedicao = 0;
 int instanteUltimoManejo = 0;
